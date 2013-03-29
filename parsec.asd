@@ -9,6 +9,10 @@
   :description "Parser combinators library based on Haskell's Parsec library."
   :serial t
   :depends-on (#:cl-unicode)
+  :in-order-to ((test-op (load-op :parsec-tests)))
+  :perform (test-op :after (op c)
+                    (funcall (intern "RUN!" :parsec-tests)
+                             :parsec-tests))
   :components ((:file "package")
                (:file "unicode")
                (:file "data")
@@ -16,3 +20,7 @@
                (:file "primitive")
                (:file "char")
                (:file "combinators")))
+
+(asdf:defsystem #:parsec-tests
+  :depends-on (#:parsec #:fiveam)
+  :components ((:file "test")))

@@ -1,13 +1,11 @@
 ;;; test.lisp
+(defpackage #:parsec-tests
+    (:use #:cl #:parsec #:fiveam))
 
-(require :parsec)
-(require :fiveam)
+(in-package #:parsec-tests)
 
-(in-package #:parsec)
-(use-package 'fiveam)
-
-(def-suite parsec)
-(in-suite parsec)
+(def-suite parsec-tests)
+(in-suite parsec-tests)
 
 (defmacro with-parse (parser input rname iname &body body)
   `(multiple-value-bind (,rname ,iname) (parse ,parser ,input)
