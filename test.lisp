@@ -76,4 +76,13 @@
                  (eof-error (u)
                             (is (= 4 (input-position (parsec-error-input u)))))))
 
+(test option
+  (with-parse (option "hi" (literal "argh")) "argh" res inp
+    (is (equal "argh" res))
+    (is (= 4 (input-position inp)))
+
+    (with-parse (option "hi" (literal "foo")) "argh" res inp
+      (is (equal "hi" res))
+      (is (= 0 (input-position inp))))))
+
 (run!)

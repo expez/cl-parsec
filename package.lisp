@@ -2,20 +2,23 @@
 
 (defpackage #:parsec
   (:use #:cl)
-  (:export :literal
-           :token
-           :unexpected
-           :eof-error
-           :parsec-error-input
-           :input-position
+  (:export :any-token
            :between
            :choice
-           :no-choices
-           :any-token
+           :defparser
+           :<-
+           :eof-error
+           :input-position
+           :next
            :many
+           :no-choices
+           :option
            :parse
+           :parsec-error-input
+           :replicate
+           :token
+           :try
+           :unexpected
            :unexpected-got
            :unexpected-wanted
-           :replicate
-           :try
-           ))
+           :literal))
