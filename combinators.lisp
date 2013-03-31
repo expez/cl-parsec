@@ -51,7 +51,7 @@ Fails if a parser fails and consumes input, or if no choices succeed."
 
 (defparser optional (p)
   "Optionally parse P, returning NIL if it fails."
-  (option nil p))
+  (<- (option nil p)))
 
 (defparser many-1 (p)
   "Parse 1 or more repetitions of a parser, stopping on failure."

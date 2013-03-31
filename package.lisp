@@ -13,6 +13,7 @@
            :many
            :no-choices
            :option
+           :optional
            :parse
            :parsec-error-input
            :replicate

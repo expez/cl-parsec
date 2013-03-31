@@ -85,4 +85,13 @@
       (is (equal "hi" res))
       (is (= 0 (input-position inp))))))
 
+(test optional
+  (with-parse (optional (literal "foo")) "foobar" res inp
+    (is (equal "foo" res))
+    (is (= 3 (input-position inp)))
+
+    (with-parse (optional (literal "asdf")) "foobar" res inp
+      (is (null res))
+      (is (= 0 (input-position inp))))))
+
 (run!)
