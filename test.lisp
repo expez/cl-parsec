@@ -101,7 +101,18 @@
 
     (failing-parse (many-1 (literal "a")) "sdf"
                    (unexpected (u)
-                               (is (eql #\s (unexpected-got u)))
                                (is (eql #\a (unexpected-wanted u)))
+                               (is (eql #\s (unexpected-got u)))
                                (is (= 0 (input-position (parsec-error-input u))))))))
+
+(test skip-many-1
+  (with-parse (skip-many-1 (token #\a)) "aaasdf" res inp
+             (is (null res))
+             (is (= 3 (input-position inp))))
+
+  (failing-parse (skip-many-1 (literal "a")) "sdf"
+                 (unexpected (u)
+                             (is (equal #\a (unexpected-wanted u)))
+                             (is (equal #\s (unexpected-got u)))
+                             (is (= 0 (input-position (parsec-error-input u)))))))
 (run!)

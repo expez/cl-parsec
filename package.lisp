@@ -18,6 +18,7 @@
            :parse
            :parsec-error-input
            :replicate
+           :skip-many-1
            :token
            :try
            :unexpected
