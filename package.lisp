@@ -11,6 +11,7 @@
            :input-position
            :next
            :many
+           :many-1
            :no-choices
            :option
            :optional

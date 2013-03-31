@@ -94,4 +94,14 @@
       (is (null res))
       (is (= 0 (input-position inp))))))
 
+(test many-1
+  (with-parse (many-1 (literal "a")) "aaasdf" res inp
+    (is (equal '("a" "a" "a") res))
+    (is (= 3 (input-position inp)))
+
+    (failing-parse (many-1 (literal "a")) "sdf"
+                   (unexpected (u)
+                               (is (eql #\s (unexpected-got u)))
+                               (is (eql #\a (unexpected-wanted u)))
+                               (is (= 0 (input-position (parsec-error-input u))))))))
 (run!)
