@@ -1,6 +1,6 @@
 ;;; test.lisp
 (defpackage #:parsec-tests
-    (:use #:cl #:parsec #:fiveam))
+  (:use #:cl #:parsec #:fiveam))
 
 (in-package #:parsec-tests)
 
@@ -107,12 +107,24 @@
 
 (test skip-many-1
   (with-parse (skip-many-1 (token #\a)) "aaasdf" res inp
-             (is (null res))
-             (is (= 3 (input-position inp))))
+    (is (null res))
+    (is (= 3 (input-position inp))))
 
   (failing-parse (skip-many-1 (literal "a")) "sdf"
                  (unexpected (u)
                              (is (equal #\a (unexpected-wanted u)))
                              (is (equal #\s (unexpected-got u)))
                              (is (= 0 (input-position (parsec-error-input u)))))))
+
+(test separate-by-1
+  (with-parse (separate-by-1 (token #\:) (letter)) "f:b:a" res inp
+    (is (equal '(#\f #\b #\a) res))
+    (is (= 5 (input-position inp))))
+
+  (failing-parse (separate-by-1 (token #\: ) (literal "f")) ":ad"
+                 (unexpected (u)
+                             (is (eql #\: (unexpected-got u)))
+                             (is (= 0 (input-position
+                                       (parsec-error-input u)))))))
+
 (run!)
