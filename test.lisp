@@ -29,7 +29,8 @@
     (is (= 3 (input-position inp))))
 
   (failing-parse (try (literal "foo")) "foul"
-                 (unexpected (c) (is (= 0 (input-position (parsec-error-input c)))))))
+                 (unexpected (c) (is (= 0 (input-position
+                                           (parsec-error-input c)))))))
 
 (test many
   (with-parse (many (token #\a)) "aaabbb" res inp
@@ -68,13 +69,15 @@
                              (is (eql #\b (unexpected-got u))))))
 
 (test between
-  (with-parse (between (literal "(") (literal ")") (literal "foo")) "(foo)" res inp
+  (with-parse (between (literal "(") (literal ")")
+                       (literal "foo")) "(foo)" res inp
     (is (equal "foo" res))
     (is (= 5 (input-position inp))))
 
   (failing-parse (between (literal "(") (literal ")") (literal "foo")) "(foo"
                  (eof-error (u)
-                            (is (= 4 (input-position (parsec-error-input u)))))))
+                            (is (= 4 (input-position
+                                      (parsec-error-input u)))))))
 
 (test option
   (with-parse (option "hi" (literal "argh")) "argh" res inp
@@ -103,7 +106,8 @@
                    (unexpected (u)
                                (is (eql #\a (unexpected-wanted u)))
                                (is (eql #\s (unexpected-got u)))
-                               (is (= 0 (input-position (parsec-error-input u))))))))
+                               (is (= 0 (input-position
+                                         (parsec-error-input u))))))))
 
 (test skip-many-1
   (with-parse (skip-many-1 (token #\a)) "aaasdf" res inp
@@ -114,7 +118,8 @@
                  (unexpected (u)
                              (is (equal #\a (unexpected-wanted u)))
                              (is (equal #\s (unexpected-got u)))
-                             (is (= 0 (input-position (parsec-error-input u)))))))
+                             (is (= 0 (input-position
+                                       (parsec-error-input u)))))))
 
 (test separate-by-1
   (with-parse (separate-by-1 (token #\:) (letter)) "f:b:a" res inp
@@ -126,5 +131,13 @@
                              (is (eql #\: (unexpected-got u)))
                              (is (= 0 (input-position
                                        (parsec-error-input u)))))))
+
+(test separate-by
+      (with-parse (separate-by (token #\:) (literal "foo")) "" res inp
+                  (is (equal nil res))
+                  (is (= 0 (input-position inp))))
+      (with-parse (separate-by (token #\:) (literal "foo")) "foo:foo" res inp
+                  (is (equal '("foo" "foo") res))
+                  (is (= 7 (input-position inp)))))
 
 (run!)

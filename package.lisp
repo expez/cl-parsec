@@ -10,6 +10,7 @@
            :eof-error
            :input-position
            :next
+           :letter
            :many
            :many-1
            :no-choices
@@ -20,6 +21,7 @@
            :replicate
            :skip-many-1
            :separate-by-1
+           :separate-by
            :token
            :try
            :unexpected
