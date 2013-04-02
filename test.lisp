@@ -177,4 +177,12 @@
                              (is (= 0 (input-position
                                        (parsec-error-input u)))))))
 
+(test separate-end-by
+      (with-parse (separate-end-by (token #\]) (literal "foo")) "foo]" res inp
+                  (is (equal '("foo") res))
+                  (is (= 4 (input-position inp))))
+      (with-parse (separate-end-by (token #\]) (literal "foo")) "foo]foo" res inp
+                  (is (equal '("foo" "foo") res))
+                  (is (= 7 (input-position inp)))))
+
 (run!)
