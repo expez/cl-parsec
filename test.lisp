@@ -140,4 +140,17 @@
                   (is (equal '("foo" "foo") res))
                   (is (= 7 (input-position inp)))))
 
+(test end-by-1
+      (with-parse (end-by-1 (token #\]) (literal "foo")) "foo]" res inp
+                  (is (equal '("foo") res))
+                  (is (= 4 (input-position inp))))
+      (with-parse (end-by-1 (token #\]) (literal "foo")) "foo]foo]" res inp
+                  (is (equal '("foo" "foo") res))
+                  (is (= 8 (input-position inp))))
+      (failing-parse (end-by-1 (token #\]) (literal "f")) ":ad"
+                 (unexpected (u)
+                             (is (eql #\: (unexpected-got u)))
+                             (is (= 0 (input-position
+                                       (parsec-error-input u)))))))
+
 (run!)

@@ -8,6 +8,7 @@
            :defparser
            :<-
            :eof-error
+           :end-by-1
            :input-position
            :next
            :letter
