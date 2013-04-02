@@ -106,13 +106,13 @@ Fails if a parser fails and consumes input, or if no choices succeed."
                 (lambda () (list x))))))
 
 (defparser lexeme (p)
-  "Run a parser, skipping trailing whitespace."
+  "Run a parser, skipping trailing spaces."
   (let ((res (<- p)))
     (<- (many (satisfy #'char-space-p)))
     res))
 
 (defparser segment (s)
-  "Read a literal string, skipping trailing whitespace."
+  "Read a literal string, skipping trailing spaces."
   (<- (lexeme (literal s))))
 
 (defparser chain (&rest ps)

@@ -133,56 +133,82 @@
                                        (parsec-error-input u)))))))
 
 (test separate-by
-      (with-parse (separate-by (token #\:) (literal "foo")) "" res inp
-                  (is (equal nil res))
-                  (is (= 0 (input-position inp))))
-      (with-parse (separate-by (token #\:) (literal "foo")) "foo:foo" res inp
-                  (is (equal '("foo" "foo") res))
-                  (is (= 7 (input-position inp)))))
+  (with-parse (separate-by (token #\:) (literal "foo")) "" res inp
+    (is (equal nil res))
+    (is (= 0 (input-position inp))))
+  (with-parse (separate-by (token #\:) (literal "foo")) "foo:foo" res inp
+    (is (equal '("foo" "foo") res))
+    (is (= 7 (input-position inp)))))
 
 (test end-by-1
-      (with-parse (end-by-1 (token #\]) (literal "foo")) "foo]" res inp
-                  (is (equal '("foo") res))
-                  (is (= 4 (input-position inp))))
-      (with-parse (end-by-1 (token #\]) (literal "foo")) "foo]foo]" res inp
-                  (is (equal '("foo" "foo") res))
-                  (is (= 8 (input-position inp))))
-      (failing-parse (end-by-1 (token #\]) (literal "f")) ":ad"
+  (with-parse (end-by-1 (token #\]) (literal "foo")) "foo]" res inp
+    (is (equal '("foo") res))
+    (is (= 4 (input-position inp))))
+  (with-parse (end-by-1 (token #\]) (literal "foo")) "foo]foo]" res inp
+    (is (equal '("foo" "foo") res))
+    (is (= 8 (input-position inp))))
+  (failing-parse (end-by-1 (token #\]) (literal "f")) ":ad"
                  (unexpected (u)
                              (is (eql #\: (unexpected-got u)))
                              (is (= 0 (input-position
                                        (parsec-error-input u)))))))
 
 (test end-by
-      (with-parse (end-by (token #\]) (literal "foo")) "foo]" res inp
-                  (is (equal '("foo") res))
-                  (is (= 4 (input-position inp))))
-      (with-parse (end-by (token #\]) (literal "foo")) "foo]foo]" res inp
-                  (is (equal '("foo" "foo") res))
-                  (is (= 8 (input-position inp))))
-      (with-parse (end-by (token #\]) (literal "foo")) "asdf" res inp
-                  (is (equal nil res))
-                  (is (= 0 (input-position inp)))))
+  (with-parse (end-by (token #\]) (literal "foo")) "foo]" res inp
+    (is (equal '("foo") res))
+    (is (= 4 (input-position inp))))
+  (with-parse (end-by (token #\]) (literal "foo")) "foo]foo]" res inp
+    (is (equal '("foo" "foo") res))
+    (is (= 8 (input-position inp))))
+  (with-parse (end-by (token #\]) (literal "foo")) "asdf" res inp
+    (is (equal nil res))
+    (is (= 0 (input-position inp)))))
 
 (test separate-end-by-1
-      (with-parse (separate-end-by-1 (token #\]) (literal "foo")) "foo]" res inp
-                  (is (equal '("foo") res))
-                  (is (= 4 (input-position inp))))
-      (with-parse (separate-end-by-1 (token #\]) (literal "foo")) "foo" res inp
-                  (is (equal '("foo") res))
-                  (is (= 3 (input-position inp))))
-      (failing-parse (separate-end-by-1 (token #\]) (literal "f")) ":ad"
+  (with-parse (separate-end-by-1 (token #\]) (literal "foo")) "foo]" res inp
+    (is (equal '("foo") res))
+    (is (= 4 (input-position inp))))
+  (with-parse (separate-end-by-1 (token #\]) (literal "foo")) "foo" res inp
+    (is (equal '("foo") res))
+    (is (= 3 (input-position inp))))
+  (failing-parse (separate-end-by-1 (token #\]) (literal "f")) ":ad"
                  (unexpected (u)
                              (is (eql #\: (unexpected-got u)))
                              (is (= 0 (input-position
                                        (parsec-error-input u)))))))
 
 (test separate-end-by
-      (with-parse (separate-end-by (token #\]) (literal "foo")) "foo]" res inp
-                  (is (equal '("foo") res))
-                  (is (= 4 (input-position inp))))
-      (with-parse (separate-end-by (token #\]) (literal "foo")) "foo]foo" res inp
-                  (is (equal '("foo" "foo") res))
-                  (is (= 7 (input-position inp)))))
+  (with-parse (separate-end-by (token #\]) (literal "foo")) "foo]" res inp
+    (is (equal '("foo") res))
+    (is (= 4 (input-position inp))))
+  (with-parse (separate-end-by (token #\]) (literal "foo")) "foo]foo" res inp
+    (is (equal '("foo" "foo") res))
+    (is (= 7 (input-position inp)))))
+
+(test lexeme
+  (with-parse (lexeme (literal "foo")) "foo  " res inp
+    (is (equal "foo" res))
+    (is (= 5 (input-position inp))))
+  (with-parse (lexeme (literal "foo")) "foo" res inp
+    (is (equal "foo" res))
+    (is (= 3 (input-position inp))))
+  (failing-parse (lexeme (literal "foo")) " foo"
+                 (unexpected (u)
+                             (is (eql #\Space (unexpected-got u)))
+                             (is (= 0 (input-position
+                                       (parsec-error-input u)))))))
+
+(test segment
+  (with-parse (segment  "foo") "foo bar" res inp
+    (is (equal "foo" res))
+    (is (= 4 (input-position inp))))
+  (with-parse (segment "foo") "foo  " res inp
+    (is (equal "foo" res))
+    (is (= 5 (input-position inp))))
+  (failing-parse (segment "foo") ":ad"
+                 (unexpected (u)
+                             (is (eql #\: (unexpected-got u)))
+                             (is (= 0 (input-position
+                                       (parsec-error-input u)))))))
 
 (run!)

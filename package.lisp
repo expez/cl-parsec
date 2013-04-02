@@ -13,6 +13,7 @@
            :input-position
            :next
            :letter
+           :lexeme
            :many
            :many-1
            :no-choices
@@ -23,6 +24,7 @@
            :replicate
            :skip-many-1
            :separate-by-1
+           :segment
            :separate-end-by-1
            :separate-end-by
            :separate-by
