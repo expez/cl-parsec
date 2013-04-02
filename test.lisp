@@ -211,4 +211,13 @@
                              (is (= 0 (input-position
                                        (parsec-error-input u)))))))
 
+(test chain
+  (with-parse (chain (segment  "foo") (lexeme (literal "bar"))) "foo bar" res inp
+    (is (equal "bar" res))
+    (is (= 7 (input-position inp))))
+  (failing-parse (chain (segment "foo") (lexeme (literal "bar"))) ":ad"
+                 (unexpected (u)
+                             (is (eql #\: (unexpected-got u)))
+                             (is (= 0 (input-position
+                                       (parsec-error-input u)))))))
 (run!)

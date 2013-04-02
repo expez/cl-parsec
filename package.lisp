@@ -25,6 +25,7 @@
            :skip-many-1
            :separate-by-1
            :segment
+           :chain
            :separate-end-by-1
            :separate-end-by
            :separate-by
