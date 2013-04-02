@@ -9,6 +9,7 @@
            :<-
            :eof-error
            :end-by-1
+           :end-by
            :input-position
            :next
            :letter

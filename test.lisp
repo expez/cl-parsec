@@ -153,4 +153,14 @@
                              (is (= 0 (input-position
                                        (parsec-error-input u)))))))
 
+(test end-by
+      (with-parse (end-by (token #\]) (literal "foo")) "foo]" res inp
+                  (is (equal '("foo") res))
+                  (is (= 4 (input-position inp))))
+      (with-parse (end-by (token #\]) (literal "foo")) "foo]foo]" res inp
+                  (is (equal '("foo" "foo") res))
+                  (is (= 8 (input-position inp))))
+      (with-parse (end-by (token #\]) (literal "foo")) "asdf" res inp
+                  (is (equal nil res))
+                  (is (= 0 (input-position inp)))))
 (run!)
