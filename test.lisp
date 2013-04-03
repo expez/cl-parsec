@@ -242,7 +242,6 @@
                              (is (= 0 (input-position
                                        (parsec-error-input u)))))))
 
-
 (test eof
   (with-parse (eof) "" res inp
     (is (null res))
@@ -250,6 +249,17 @@
   (failing-parse (eof) "foo"
                  (unexpected (u)
                              (is (eq #\f (unexpected-got u)))
+                             (is (= 0 (input-position
+                                       (parsec-error-input u)))))))
+
+(test look-ahead
+  (with-parse (look-ahead (literal "foo")) "foo" res inp
+    (is (equal "foo" res))
+    (is (= 0 (input-position inp))))
+  (failing-parse (eof) "bar "
+  (failing-parse (look-ahead (literal "foo")) "bar "
+                 (unexpected (u)
+                             (is (eq #\b (unexpected-got u)))
                              (is (= 0 (input-position
                                        (parsec-error-input u)))))))
 (run!)

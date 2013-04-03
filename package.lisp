@@ -38,3 +38,4 @@
            :literal))
            :not-followed-by
            :eof
+           :look-ahead
