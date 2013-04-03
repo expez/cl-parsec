@@ -135,7 +135,6 @@ Fails if a parser fails and consumes input, or if no choices succeed."
   (<- (try (choice
             (lambda ()
               (let ((res (<- (try p))))
-                (format t "result: ~s~%" res)
                 (error 'unexpected :got res)))
             (lambda () nil)))))
 
