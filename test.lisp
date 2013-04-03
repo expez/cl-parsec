@@ -256,10 +256,16 @@
   (with-parse (look-ahead (literal "foo")) "foo" res inp
     (is (equal "foo" res))
     (is (= 0 (input-position inp))))
-  (failing-parse (eof) "bar "
   (failing-parse (look-ahead (literal "foo")) "bar "
                  (unexpected (u)
                              (is (eq #\b (unexpected-got u)))
                              (is (= 0 (input-position
                                        (parsec-error-input u)))))))
+
+(test many-till
+  (with-parse (many-till (literal "f") (literal "$")) "ffff$" res inp
+    (is (equal '("f" "f" "f" "f") res))
+    (is (= 5 (input-position inp))))
+  (failing-parse (many-till (literal "f") (literal "$")) "bar"
+                 (error () nil)))
 (run!)

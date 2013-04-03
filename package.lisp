@@ -35,7 +35,8 @@
            :unexpected
            :unexpected-got
            :unexpected-wanted
-           :literal))
+           :literal
            :not-followed-by
            :eof
            :look-ahead
+           :many-till))
