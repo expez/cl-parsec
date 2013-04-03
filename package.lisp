@@ -26,6 +26,7 @@
            :separate-by-1
            :segment
            :chain
+           :parens
            :separate-end-by-1
            :separate-end-by
            :separate-by

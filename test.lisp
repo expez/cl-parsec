@@ -220,4 +220,15 @@
                              (is (eql #\: (unexpected-got u)))
                              (is (= 0 (input-position
                                        (parsec-error-input u)))))))
+
+(test parens
+  (with-parse (parens (literal "foo")) "(foo) bar" res inp
+    (is (equal "foo" res))
+    (is (= 6 (input-position inp))))
+  (failing-parse (parens (literal "foo")) "foo"
+                 (unexpected (u)
+                             (is (eql #\f (unexpected-got u)))
+                             (is (eql #\( (unexpected-wanted u)))
+                             (is (= 0 (input-position
+                                       (parsec-error-input u)))))))
 (run!)
