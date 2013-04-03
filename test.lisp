@@ -231,4 +231,16 @@
                              (is (eql #\( (unexpected-wanted u)))
                              (is (= 0 (input-position
                                        (parsec-error-input u)))))))
+
+(test not-followed-by
+  (with-parse (not-followed-by (literal ".")) "foo bar." res inp
+    (is (null res))
+    (is (= 0 (input-position inp))))
+  (failing-parse (not-followed-by (literal ".")) ".foo"
+                 (unexpected (u)
+                             (is (equal "." (unexpected-got u)))
+                             (is (= 0 (input-position
+                                       (parsec-error-input u)))))))
+
+
 (run!)

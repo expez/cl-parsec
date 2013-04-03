@@ -36,3 +36,4 @@
            :unexpected-got
            :unexpected-wanted
            :literal))
+           :not-followed-by
