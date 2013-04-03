@@ -243,4 +243,13 @@
                                        (parsec-error-input u)))))))
 
 
+(test eof
+  (with-parse (eof) "" res inp
+    (is (null res))
+    (is (= 0 (input-position inp))))
+  (failing-parse (eof) "foo"
+                 (unexpected (u)
+                             (is (eq #\f (unexpected-got u)))
+                             (is (= 0 (input-position
+                                       (parsec-error-input u)))))))
 (run!)

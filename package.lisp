@@ -37,3 +37,4 @@
            :unexpected-wanted
            :literal))
            :not-followed-by
+           :eof
