@@ -83,4 +83,3 @@
 (defun char-separator-p (c)
   "Is character C a separator?"
   (eql #\Z (char (cl-unicode:general-category c) 0)))
-

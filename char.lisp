@@ -36,7 +36,7 @@
 
 (defparser newline ()
   "Parses a newline character."
-  (<- (token #\Space)))
+  (<- (token #\Newline)))
 
 (defparser tab ()
   "Parses a tab character."
